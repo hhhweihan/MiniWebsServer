@@ -14,8 +14,8 @@ int main() {
     // 2.连接服务器端
     struct sockaddr_in serveraddr;
     serveraddr.sin_family = AF_INET;
-    inet_pton(AF_INET, "183.232.231.174", &serveraddr.sin_addr.s_addr);
-    serveraddr.sin_port = htons(80);
+    inet_pton(AF_INET, "127.0.0.1", &serveraddr.sin_addr.s_addr);
+    serveraddr.sin_port = htons(8888);
     int ret = connect(fd, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
     if(ret == -1) {
         perror("connect");
@@ -52,6 +52,7 @@ int main() {
             break;
         } else{
             total_size += size_recv;
+            recvBuf[total_size] = '\0';
             printf("%s", recvBuf);
         }
     }
