@@ -1,3 +1,3 @@
-# xuanyuan_webserver
-
-## 目标：完成一个可用的webServer
+- 学习网络编程cppWebServer
+- 2022年开始学习，miniWebServer目录即为初步实现基本功能的项目代码
+- 现阶段还在持续学习中...
