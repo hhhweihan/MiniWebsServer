@@ -50,6 +50,8 @@ int main(int argc, char* argv[])
     char * ip = inet_ntoa(caddr.sin_addr);
     unsigned short cport = ntohs(caddr.sin_port);
     printf("client ip is %s, port is %d\n", ip, cport);
+    char buf[1024] = {0};
+    recv(client, buf, sizeof(buf)-1, 0);
 
     closesocket(client);
     return 0;
