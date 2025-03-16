@@ -1,7 +1,7 @@
 # MiniWebServer
 
 ## 项目简介
-MiniWebServer 是一个基于C++14开发的高性能Web服务器，采用现代C++特性实现。本项目采用Reactor模式设计，使用多线程+非阻塞IO+epoll(ET和EPOLLONESHOT)的并发模型，实现了高并发的Web服务器。
+重构自WH1024/xuanyuan_webserver仓库。MiniWebServer 是一个基于C++11开发的高性能Web服务器项目；采用Reactor模式设计，使用多线程+非阻塞IO+epoll并发模型，实现了简易高并发的Web服务器
 
 ## 核心功能特性
 - **并发模型**: 
@@ -56,7 +56,7 @@ MiniWebServer 是一个基于C++14开发的高性能Web服务器，采用现代C
 ## 构建和运行
 ```bash
 # 克隆项目
-git clone https://github.com/yourusername/xuanyuan_webserver.git
+git clone git@github.com:hhhweihan/xuanyuan_webserver.git
 cd xuanyuan_webserver
 
 # 构建项目(包含代码格式化)
@@ -104,8 +104,3 @@ cd xuanyuan_webserver
 
 ## 开源协议
 本项目采用MIT开源协议。详情请参见[LICENSE](LICENSE)文件。
-
-## 联系方式
-- 作者: [Your Name]
-- 邮箱: [Your Email]
-- 项目地址: [GitHub Repository URL]
