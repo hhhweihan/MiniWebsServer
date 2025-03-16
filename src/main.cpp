@@ -10,7 +10,7 @@ void signal_handler(int sig) {
 int main(int argc, char* argv[]) {
     signal(SIGINT, signal_handler);
     
-    int port = 8080;
+    int port = 9006;
     int thread_num = 8;
     
     if(argc >= 2) {

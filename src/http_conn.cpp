@@ -7,7 +7,7 @@
 #include <string.h>
 
 std::atomic<int> HttpConn::user_count(0);
-const char* doc_root = "./resources";
+const char* doc_root = ".";
 
 HttpConn::HttpConn() {
     sockfd_ = -1;
@@ -309,13 +309,24 @@ HttpConn::HttpCode HttpConn::parse_content(const std::string& text) {
 HttpConn::HttpCode HttpConn::do_request() {
     // 将网站根目录和url拼接
     std::string path = doc_root + url_;
-    if(url_ == "/") {
+    
+    // 处理网站图标请求
+    if(url_ == "/favicon.ico") {
+        path = doc_root + std::string("/pic/favicon.ico");
+    }
+    // 处理默认页面
+    else if(url_ == "/") {
         path += "index.html";
     }
     
     // 获取文件信息
     if(stat(path.c_str(), &file_stat_) < 0) {
-        return NO_RESOURCE;
+        // 如果请求的文件不存在，返回404页面
+        std::string error_path = doc_root + std::string("/404.html");
+        if(stat(error_path.c_str(), &file_stat_) < 0) {
+            return NO_RESOURCE;
+        }
+        path = error_path;
     }
     
     // 判断访问权限
@@ -372,7 +383,16 @@ bool HttpConn::add_status_line(int status, const char* title) {
 bool HttpConn::add_headers(int content_len) {
     bool ret = add_response("Content-Length: %d\r\n", content_len);
     ret = ret && add_response("Connection: %s\r\n", linger_ ? "keep-alive" : "close");
-    ret = ret && add_response("Content-Type: %s\r\n", "text/html");
+    
+    // 根据文件扩展名设置Content-Type
+    const char* file_type = "text/html";
+    if(url_.find(".jpg") != std::string::npos || url_.find(".jpeg") != std::string::npos) {
+        file_type = "image/jpeg";
+    }
+    else if(url_.find(".ico") != std::string::npos) {
+        file_type = "image/x-icon";
+    }
+    ret = ret && add_response("Content-Type: %s\r\n", file_type);
     ret = ret && add_response("\r\n");
     return ret;
 }

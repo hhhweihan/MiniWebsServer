@@ -3,6 +3,7 @@
 # 创建必要的目录
 mkdir -p build
 mkdir -p output
+mkdir -p output/log
 
 # 进入构建目录
 cd build
@@ -27,6 +28,8 @@ if [ $? -eq 0 ]; then
     if [ -d "resources" ]; then
         echo "Copying resources to output directory..."
         cp -r resources/* output/
+        mkdir -p output/pic
+        cp -r resources/pic/* output/pic/
     fi
     
     # 获取服务器公网IP
@@ -50,4 +53,10 @@ if [ $? -eq 0 ]; then
 else
     echo "Build failed!"
     exit 1
-fi 
+fi
+
+sudo netstat -tulpn | grep 9006
+
+sudo service nginx stop
+
+sudo ufw status 

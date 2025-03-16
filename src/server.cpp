@@ -11,7 +11,7 @@ WebServer::WebServer(int port, int thread_num)
       users_(new HttpConn[MAX_FD]) {
     
     // 初始化日志
-    Log::instance()->init("./log/WebServer.log", 0, 2000, 800000, 800);
+    Log::instance()->init("log/WebServer.log", 0, 2000, 800000, 800);
     
     // 初始化事件模式
     listen_event_ = EPOLLRDHUP;
@@ -25,18 +25,19 @@ WebServer::WebServer(int port, int thread_num)
 WebServer::~WebServer() {
     close(listen_fd_);
     is_close_ = true;
+    LOG_INFO("========== Server stopped ==========");
 }
 
 void WebServer::start() {
     if(!is_close_) {
         LOG_INFO("========== Server start ==========");
-        LOG_INFO("Port:%d", port_);
+        LOG_INFO("Port: %d", port_);
     }
     
     while(!is_close_) {
         int event_count = epoll_wait(epoll_fd_, events_, MAX_EVENT_NUMBER, -1);
         if(event_count < 0 && errno != EINTR) {
-            LOG_ERROR("%s", "epoll failure");
+            LOG_ERROR("Epoll failure: %s", strerror(errno));
             break;
         }
         
@@ -74,20 +75,33 @@ bool WebServer::init_socket() {
     
     listen_fd_ = socket(AF_INET, SOCK_STREAM, 0);
     if(listen_fd_ < 0) {
-        LOG_ERROR("Create socket error");
+        LOG_ERROR("Create socket error: %s", strerror(errno));
+        return false;
+    }
+    
+    int reuse = 1;
+    if (setsockopt(listen_fd_, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) == -1) {
+        LOG_ERROR("Set socket reuse address error: %s", strerror(errno));
+        close(listen_fd_);
+        return false;
+    }
+    
+    if (setsockopt(listen_fd_, SOL_SOCKET, SO_REUSEPORT, &reuse, sizeof(reuse)) == -1) {
+        LOG_ERROR("Set socket reuse port error: %s", strerror(errno));
+        close(listen_fd_);
         return false;
     }
     
     ret = bind(listen_fd_, (struct sockaddr*)&addr, sizeof(addr));
     if(ret < 0) {
-        LOG_ERROR("Bind error");
+        LOG_ERROR("Bind error: %s", strerror(errno));
         close(listen_fd_);
         return false;
     }
     
     ret = listen(listen_fd_, 5);
     if(ret < 0) {
-        LOG_ERROR("Listen error");
+        LOG_ERROR("Listen error: %s", strerror(errno));
         close(listen_fd_);
         return false;
     }
@@ -111,7 +125,7 @@ bool WebServer::init_socket() {
     }
     
     set_nonblocking(listen_fd_);
-    LOG_INFO("Server init success");
+    LOG_INFO("Server listening on port: %d", port_);
     return true;
 }
 

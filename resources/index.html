@@ -1,42 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XuanYuan WebServer</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 40px auto;
-            max-width: 800px;
-            padding: 0 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         h1 {
-            color: #333;
+            color: #2c3e50;
             text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
         }
-        .info {
-            background-color: #f5f5f5;
+        .status {
+            background: #e8f5e9;
+            padding: 15px;
             border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .status.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .features {
+            background: #f8f9fa;
             padding: 20px;
-            margin: 20px 0;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .features h2 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .features ul {
+            padding-left: 20px;
+        }
+        .features li {
+            margin-bottom: 10px;
+        }
+        .test-links {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff3e0;
+            border-radius: 5px;
+        }
+        .test-links h2 {
+            color: #e65100;
+            margin-top: 0;
+        }
+        .test-links code {
+            background: #fff;
+            padding: 3px 6px;
+            border-radius: 3px;
+            border: 1px solid #ddd;
         }
     </style>
 </head>
 <body>
-    <h1>欢迎使用 XuanYuan WebServer</h1>
-    <div class="info">
-        <h2>服务器信息</h2>
-        <ul>
-            <li>使用C++11开发</li>
-            <li>多线程处理并发请求</li>
-            <li>Epoll高效IO</li>
-            <li>支持HTTP长连接</li>
-            <li>异步日志系统</li>
-        </ul>
-    </div>
-    <div class="info">
-        <h2>功能测试</h2>
-        <p>如果您看到这个页面，说明服务器工作正常！</p>
+    <div class="container">
+        <h1>XuanYuan WebServer</h1>
+        
+        <div class="status success">
+            <h2>✅ 服务器状态</h2>
+            <p>服务器运行正常！当前页面由 XuanYuan WebServer 提供服务。</p>
+        </div>
+
+        <div class="features">
+            <h2>🚀 核心特性</h2>
+            <ul>
+                <li>基于 C++11 开发的高性能 Web 服务器</li>
+                <li>多线程处理并发请求</li>
+                <li>使用 Epoll 边缘触发的 I/O 多路复用</li>
+                <li>异步日志系统</li>
+                <li>支持 HTTP 长连接</li>
+                <li>支持静态资源访问</li>
+            </ul>
+        </div>
     </div>
 </body>
 </html> 
