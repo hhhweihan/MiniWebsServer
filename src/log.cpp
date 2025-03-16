@@ -21,7 +21,7 @@ void Log::init(const char* file_name, int close_log, int log_buf_size,
                int split_lines, int max_queue_size) {
     if(max_queue_size >= 1) {
         is_async_ = true;
-        log_queue_ = std::make_unique<BlockQueue<std::string>>(max_queue_size);
+        log_queue_ = std::unique_ptr<BlockQueue<std::string>>(new BlockQueue<std::string>(max_queue_size));
         std::thread write_thread(flush_log_thread);
         write_thread.detach();
     }

@@ -15,13 +15,13 @@ public:
         
         // 创建指定数量的工作线程
         for(size_t i = 0; i < thread_count; i++) {
-            std::thread([pool = pool_] {
-                std::unique_lock<std::mutex> locker(pool->mtx);
+            std::thread([this] {
+                std::unique_lock<std::mutex> locker(pool_->mtx);
                 while(true) {
-                    if(!pool->tasks.empty()) {
+                    if(!pool_->tasks.empty()) {
                         // 获取一个任务
-                        auto task = std::move(pool->tasks.front());
-                        pool->tasks.pop();
+                        auto task = std::move(pool_->tasks.front());
+                        pool_->tasks.pop();
                         locker.unlock();
                         
                         // 执行任务
@@ -29,8 +29,8 @@ public:
                         
                         locker.lock();
                     } 
-                    else if(pool->is_closed) break;
-                    else pool->cond.wait(locker);
+                    else if(pool_->is_closed) break;
+                    else pool_->cond.wait(locker);
                 }
             }).detach();
         }

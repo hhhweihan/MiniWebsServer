@@ -76,7 +76,7 @@ public:
     }
     
 private:
-    std::priority_queue<TimerNode, std::vector<TimerNode>, std::greater<>> timers_;
+    std::priority_queue<TimerNode, std::vector<TimerNode>, std::greater<TimerNode>> timers_;
     std::unordered_map<int, TimePoint> ref_;
     std::mutex mutex_;
 };
